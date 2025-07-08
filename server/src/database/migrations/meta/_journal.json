@@ -8,6 +8,13 @@
       "when": 1751948494004,
       "tag": "0000_naive_the_captain",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751986018213,
+      "tag": "0001_nasty_skullbuster",
+      "breakpoints": true
     }
   ]
 }
