@@ -1,0 +1,13 @@
+name: let-me-ask
+services:
+  let-me-ask-database:
+    image: pgvector/pgvector:pg17
+    container_name: let-me-ask-database
+    environment:
+      POSTGRES_USER: lma
+      POSTGRES_PASSWORD: lma
+      POSTGRES_DB: let_me_ask_agents
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
