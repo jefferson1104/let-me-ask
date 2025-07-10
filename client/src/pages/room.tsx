@@ -1,5 +1,7 @@
-import { ChevronLeft, Wand } from 'lucide-react';
+import { ArrowLeft, Radio } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import { QuestionForm } from '@/components/question-form';
+import { QuestionItem } from '@/components/question-item';
 import { Button } from '@/components/ui/button';
 
 type RoomParams = {
@@ -14,27 +16,49 @@ export function Room() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gray-100 dark:bg-neutral-900">
-      <div className="flex w-full max-w-md flex-col items-center rounded-2xl bg-white p-10 shadow-xl dark:bg-neutral-800">
-        <h1 className="mb-8 text-center font-bold text-2xl text-gray-900 dark:text-white">
-          Sala #{params.roomId}
-        </h1>
+    <div className="min-h-screen bg-zinc-950">
+      <div className="container mx-auto max-w-4xl px-4 py-8">
+        <div className="mb-8">
+          <div className="mb-4 flex items-center justify-between">
+            <Link to="/">
+              <Button variant="outline">
+                <ArrowLeft className="mr-2 size-4" />
+                Back
+              </Button>
+            </Link>
+            <Link to={`/room/${params.roomId}/audio`}>
+              <Button className="flex items-center gap-2" variant="secondary">
+                <Radio className="size-4" />
+                Record Audio
+              </Button>
+            </Link>
+          </div>
+          <h1 className="mb-2 font-bold text-3xl text-foreground">
+            Question Room
+          </h1>
+          <p className="text-muted-foreground">
+            Ask questions and get answers with AI
+          </p>
+        </div>
 
-        <p className="mb-8 text-center text-gray-600 dark:text-gray-300">
-          Bem-vindo à sala! Aqui você pode interagir, fazer perguntas e
-          compartilhar ideias.
-        </p>
+        <div className="mb-8">
+          <QuestionForm roomId={params.roomId} />
+        </div>
 
-        <div className="flex w-full flex-col flex-nowrap items-center gap-4">
-          <Button className="w-full" size="lg">
-            <Wand className="mr-2" /> Nova pergunta
-          </Button>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="font-semibold text-2xl text-foreground">
+              Questions & Answers
+            </h2>
+          </div>
 
-          <Link className="flex w-full items-center" to="/">
-            <Button className="w-full " size="lg" variant="outline">
-              <ChevronLeft className="mr-2" /> Nova pergunta
-            </Button>
-          </Link>
+          <QuestionItem
+            question={{
+              id: '1',
+              question: 'Question 1',
+              createdAt: new Date().toISOString(),
+            }}
+          />
         </div>
       </div>
     </div>
