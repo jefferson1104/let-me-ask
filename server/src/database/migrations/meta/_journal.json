@@ -15,6 +15,13 @@
       "when": 1751986018213,
       "tag": "0001_nasty_skullbuster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752220649834,
+      "tag": "0002_shallow_weapon_omega",
+      "breakpoints": true
     }
   ]
 }
