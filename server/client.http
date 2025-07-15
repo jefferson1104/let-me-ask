@@ -1,19 +1,16 @@
 # Variables
 @baseUrl = http://localhost:3333
 
-# Health check
+### Health check
 # @name healthCheck
 GET {{baseUrl}}/health
 
-###
-
-# Get rooms
+### Get rooms
 # @name getRooms
 GET {{baseUrl}}/rooms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplZmZlcnNvbnNjanVuaW9yQGdtYWlsLmNvbSIsInByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJJZCI6IjExNDA2NDY4OTI2MDQzODE0MDMyMSIsImlhdCI6MTc1MjUzNTMwNywiZXhwIjoxNzUyNTM2MjA3fQ.enb_pFGkpriEuKfK5j1GOqsPDzVjq9TnURidGATBpq0
 
-###
-
-# Create room
+### Create room
 # @name createRoom
 POST {{baseUrl}}/rooms
 Content-Type: application/json
@@ -24,22 +21,35 @@ Content-Type: application/json
 }
 
 ###
-
 @roomId = {{getRooms.response.body.$.[0].id}}
 
-###
-
-# Get room questions
+### Get room questions
 # @name getRoomQuestions
 GET {{baseUrl}}/rooms/{{roomId}}/questions
 
-###
-
-# Create question
+### Create question
 # @name createQuestion
 POST {{baseUrl}}/rooms/6f05315b-1442-4bfa-af46-cf39d951f59e/questions
 Content-Type: application/json
 
 {
   "question": "O que é React?"
+}
+
+### User Auth
+# @name createUser
+POST {{baseUrl}}/auth/google
+Content-Type: application/json
+
+{
+  "credential": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImYxMDMzODYwNzE2ZTNhMmFhYjM4MGYwMGRiZTM5YTcxMTQ4NDZiYTEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDgzMDg5NzAwMzIxLWs3ZWdmbnI0MThkaXJ2bmtib3V2bmt0MDlpYXVndmg2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA4MzA4OTcwMDMyMS1rN2VnZm5yNDE4ZGlydm5rYm91dm5rdDA5aWF1Z3ZoNi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjExNDA2NDY4OTI2MDQzODE0MDMyMSIsImVtYWlsIjoiamVmZmVyc29uc2NqdW5pb3JAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTc1MjUzNjIxMCwibmFtZSI6IkplZmZlcnNvbiBTb2FyZXMgQ29zdGEgSnVuaW9yIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0s1MFJGaExaYlRZSUZFeGFjYTFWdGVabGFoRDFOWEZ5SXNmNXVpQ1A2bEVpTWdMdjg9czk2LWMiLCJnaXZlbl9uYW1lIjoiSmVmZmVyc29uIiwiZmFtaWx5X25hbWUiOiJTb2FyZXMgQ29zdGEgSnVuaW9yIiwiaWF0IjoxNzUyNTM2NTEwLCJleHAiOjE3NTI1NDAxMTAsImp0aSI6IjUwNjIwNDcwZWNlYmU5ZGQ2MjgzZmQ1MDQ0NzkxMmRkNmQwNjg2ZjgifQ.S2px-WXrVkh5wyADmmo9tH9pDHUDO3RUuoQm5hDm1Ca41fF_UwQAQW5fdbjGb10YAjetU-d5oq2DZeEzfESge7bXVEsfTah_nNj7wIaHPoLBRstYFgCrJ6iLxHVe7C_jxtqmuyFJHci5iDvpyItqa27TPG3sQA57opB0b6wvdj7k-UoZZ-rioVKQYGN2Mu_67HuE2tUw2-GEPwybwkh50jdiRKChX3bkwwsp-3Comocix6m7lgkHbs8DIr0i2MYngsh4TVHNovqQq7qxvWSKKg74QUaZc25aAzve0k9i2RMfvxd20KuWPWD1xuonR2Gm1F22vM7UKwabR1hvLgylcA"
+}
+
+### Refresh token
+# @name refreshToken
+POST {{baseUrl}}/auth/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplZmZlcnNvbnNjanVuaW9yQGdtYWlsLmNvbSIsInByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJJZCI6IjExNDA2NDY4OTI2MDQzODE0MDMyMSIsImlhdCI6MTc1MjUzMjkzNywiZXhwIjoxNzUzMTM3NzM3fQ.9M-1yi7GrHhOLF6umBgnuu7hocpJPPYlzLFfJJ0Aehk"
 }

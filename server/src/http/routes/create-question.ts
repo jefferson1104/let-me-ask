@@ -1,14 +1,21 @@
 import { and, eq, sql } from 'drizzle-orm';
 import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
+
 import { db } from '../../database/connection.ts';
 import { schema } from '../../database/schema/index.ts';
+
 import { generateAnswer, generateEmbeddings } from '../../services/gemini.ts';
 
+import { createAuthMiddleware } from '../middlewares/auth.ts';
+
 export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
+  const authenticate = createAuthMiddleware(app);
+
   app.post(
     '/rooms/:roomId/questions',
     {
+      preHandler: [authenticate],
       schema: {
         params: z.object({
           roomId: z.string(),
