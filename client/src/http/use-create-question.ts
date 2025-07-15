@@ -1,7 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
+import { Slide, toast } from 'react-toastify';
 
 import type { CreateQuestionRequest } from '@/http/types/create-question-request';
 import type { CreateQuestionResponse } from '@/http/types/create-question-response';
+
+import api from '@/services/api';
+
 import type { GetRoomQuestionsResponse } from './types/get-room-questions-response';
 
 export function useCreateQuestion(roomId: string) {
@@ -9,18 +14,12 @@ export function useCreateQuestion(roomId: string) {
 
   return useMutation({
     mutationFn: async (data: CreateQuestionRequest) => {
-      const response = await fetch(
+      const response = await api.post(
         `http://localhost:3333/rooms/${roomId}/questions`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
+        data
       );
 
-      const result: CreateQuestionResponse = await response.json();
+      const result: CreateQuestionResponse = await response.data;
 
       return result;
     },
@@ -49,13 +48,32 @@ export function useCreateQuestion(roomId: string) {
       return { newQuestion, questions };
     },
 
-    onError(_error, _variables, context) {
+    onError(error, _variables, context) {
       if (context?.questions) {
         queryClient.setQueryData<GetRoomQuestionsResponse>(
           ['get-questions', roomId],
           context.questions
         );
       }
+
+      const errorMessage =
+        isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'Unknown error';
+
+      console.error('Error: ', errorMessage);
+
+      toast.error(errorMessage, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+        transition: Slide,
+      });
     },
 
     onSuccess(data, _variables, context) {
@@ -84,6 +102,18 @@ export function useCreateQuestion(roomId: string) {
           });
         }
       );
+
+      toast.success('Question created successfully', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+        transition: Slide,
+      });
     },
   });
 }

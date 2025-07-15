@@ -1,6 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { Auth } from '@/pages/auth';
 import { CreateRoom } from '@/pages/create-room';
@@ -47,6 +48,7 @@ export function App() {
                 path="/room/:roomId/audio"
               />
             </Routes>
+            <ToastContainer />
           </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>
