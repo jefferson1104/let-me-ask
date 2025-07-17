@@ -33,12 +33,12 @@ const signUpSchema = z
     path: ['confirmPassword'],
   });
 
-type CreateUserFormData = z.infer<typeof signUpSchema>;
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
-export function CreateUserForm() {
+export function SignUpForm() {
   const navigate = useNavigate();
   const { mutateAsync: createUser } = useCreateUser();
-  const form = useForm<CreateUserFormData>({
+  const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: '',
@@ -50,7 +50,7 @@ export function CreateUserForm() {
 
   const { isSubmitting } = form.formState;
 
-  async function handleCreateQuestion(data: CreateUserFormData) {
+  async function handleSignUp(data: SignUpFormData) {
     await createUser(data);
     form.reset();
     navigate('/', { replace: true });
@@ -62,7 +62,7 @@ export function CreateUserForm() {
         <Form {...form}>
           <form
             className="flex flex-col gap-4"
-            onSubmit={form.handleSubmit(handleCreateQuestion)}
+            onSubmit={form.handleSubmit(handleSignUp)}
           >
             <FormField
               control={form.control}

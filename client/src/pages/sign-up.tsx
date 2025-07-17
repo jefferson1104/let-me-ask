@@ -1,6 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CreateUserForm } from '@/components/create-user-form';
+import { SignUpForm } from '@/components/sign-up-form';
 import { Button } from '@/components/ui/button';
 
 export function SignUp() {
@@ -22,7 +22,7 @@ export function SignUp() {
           </div>
         </div>
 
-        <CreateUserForm />
+        <SignUpForm />
       </div>
     </div>
   );
