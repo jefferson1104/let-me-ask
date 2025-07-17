@@ -1,5 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod/v4';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/auth-context';
 
 const signInSchema = z.object({
   email: z.email({ message: 'Invalid email address' }),
@@ -23,7 +26,9 @@ const signInSchema = z.object({
 type SignInFormData = z.infer<typeof signInSchema>;
 
 export function SignInForm() {
-  const signIn = useForm<SignInFormData>({
+  const navigate = useNavigate();
+  const { signIn, isLoading } = useAuth();
+  const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
@@ -31,27 +36,33 @@ export function SignInForm() {
     },
   });
 
-  function handleSignIn({ email, password }: SignInFormData) {
-    console.log('Form submitted: ', { email, password });
+  const handleRedirectToHome = () => {
+    navigate('/create-room', { replace: true });
+  };
 
-    signIn.reset();
-  }
+  const handleSignIn = async ({ email, password }: SignInFormData) => {
+    await signIn(email, password);
+
+    form.reset();
+
+    handleRedirectToHome();
+  };
 
   return (
-    <Form {...signIn}>
+    <Form {...form}>
       <form
         className="flex flex-col gap-4"
-        onSubmit={signIn.handleSubmit(handleSignIn)}
+        onSubmit={form.handleSubmit(handleSignIn)}
       >
         <FormField
-          control={signIn.control}
+          control={form.control}
           name="email"
           render={({ field }) => {
             return (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -60,14 +71,14 @@ export function SignInForm() {
         />
 
         <FormField
-          control={signIn.control}
+          control={form.control}
           name="password"
           render={({ field }) => {
             return (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,8 +86,13 @@ export function SignInForm() {
           }}
         />
 
-        <Button className="w-full" type="submit">
-          Sign In
+        <Button
+          className="animate flex w-full cursor-pointer items-center"
+          disabled={isLoading}
+          type="submit"
+        >
+          <p>Log in</p>
+          {isLoading && <Loader2 className="animate-spin" />}
         </Button>
       </form>
     </Form>

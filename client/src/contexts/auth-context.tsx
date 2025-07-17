@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios';
 import {
   createContext,
   type ReactNode,
@@ -5,49 +6,102 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Slide, toast } from 'react-toastify';
 
-import { loginWithGoogle } from '@/services/google-oauth';
-import { refreshAccessToken } from '@/services/refresh-token';
+import api from '@/services/api';
 
 type AuthContextType = {
   accessToken: string | null;
   refreshToken: string | null;
-  loading: boolean;
-  googleSignIn: (googleCredential: string) => Promise<void>;
-  logout: () => void;
-  refresh: () => Promise<void>;
+  isLoading: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: (googleCredential: string) => Promise<void>;
+  signOut: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
-  const googleSignIn = async (googleCredential: string) => {
-    const response = await loginWithGoogle(googleCredential);
+  const signIn = async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      const { data } = await api.post('/auth', { email, password });
 
-    localStorage.setItem('access_token', response.accessToken);
-    localStorage.setItem('refresh_token', response.refreshToken);
+      localStorage.setItem('access_token', data.accessToken);
+      localStorage.setItem('refresh_token', data.refreshToken);
 
-    setAccessToken(response.accessToken);
-    setRefreshToken(response.refreshToken);
+      setAccessToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
+    } catch (error) {
+      const errorMessage =
+        isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'Unknown error';
+
+      console.error('signIn() Error: ', errorMessage);
+
+      toast.error(errorMessage, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+        transition: Slide,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const logout = () => {
+  const signInWithGoogle = async (googleCredential: string) => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await api.post('/auth/google', {
+        credential: googleCredential,
+      });
+
+      localStorage.setItem('access_token', data.accessToken);
+      localStorage.setItem('refresh_token', data.refreshToken);
+
+      setAccessToken(data.accessToken);
+      setRefreshToken(data.refreshToken);
+    } catch (error) {
+      const errorMessage =
+        isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'Unknown error';
+
+      console.error('signInWithGoogle() Error: ', errorMessage);
+
+      toast.error(errorMessage, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+        transition: Slide,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signOut = () => {
     setAccessToken(null);
     setRefreshToken(null);
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-  };
-
-  const refresh = async () => {
-    const response = await refreshAccessToken();
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
-    localStorage.setItem('access_token', response.accessToken);
-    localStorage.setItem('refresh_token', response.refreshToken);
   };
 
   useEffect(() => {
@@ -56,18 +110,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setAccessToken(accessTokenFromStorage);
     setRefreshToken(refreshTokenFromStorage);
-    setLoading(false);
+    setIsLoading(false);
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
+        signIn,
+        signInWithGoogle,
+        signOut,
+        isLoading,
         accessToken,
         refreshToken,
-        googleSignIn,
-        logout,
-        refresh,
-        loading,
       }}
     >
       {children}

@@ -12,11 +12,15 @@ import { useAuth } from '@/contexts/auth-context';
 
 export function SignIn() {
   const navigate = useNavigate();
-  const { accessToken, googleSignIn } = useAuth();
+  const { signInWithGoogle, accessToken } = useAuth();
 
-  const handleSignIn = async (credential: string) => {
-    await googleSignIn(credential);
+  const handleRedirectToHome = () => {
     navigate('/create-room', { replace: true });
+  };
+
+  const handleGoogleSignIn = async (credential: string) => {
+    await signInWithGoogle(credential);
+    handleRedirectToHome();
   };
 
   if (accessToken) {
@@ -26,7 +30,7 @@ export function SignIn() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
       <Card className="min-w-80">
         <CardHeader className="flex flex-col items-center justify-center">
-          <CardTitle>Sign in</CardTitle>
+          <CardTitle>Sign In</CardTitle>
           <CardDescription className="text-center text-xs">
             Type your email and password to continue.
           </CardDescription>
@@ -52,7 +56,7 @@ export function SignIn() {
               onError={() => alert('Error: login failed')}
               onSuccess={(response) => {
                 if (response.credential) {
-                  handleSignIn(response.credential);
+                  handleGoogleSignIn(response.credential);
                 }
               }}
             />

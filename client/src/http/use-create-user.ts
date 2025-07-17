@@ -10,9 +10,7 @@ export function useCreateUser() {
     mutationFn: async (data: CreateUserRequest) => {
       const response = await api.post('/auth/register', data);
 
-      await response.data;
-
-      return;
+      return response.data;
     },
     onSuccess: () => {
       toast.success('User created successfully', {
