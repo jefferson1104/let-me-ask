@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-const authSchema = z.object({
+const signInSchema = z.object({
   email: z.email({ message: 'Invalid email address' }),
   password: z
     .string()
@@ -20,31 +20,31 @@ const authSchema = z.object({
     .min(6, { message: 'It must be at least 6 characters long' }),
 });
 
-type AuthFormData = z.infer<typeof authSchema>;
+type SignInFormData = z.infer<typeof signInSchema>;
 
-export function AuthForm() {
-  const authForm = useForm<AuthFormData>({
-    resolver: zodResolver(authSchema),
+export function SignInForm() {
+  const signIn = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function handleAuth({ email, password }: AuthFormData) {
+  function handleSignIn({ email, password }: SignInFormData) {
     console.log('Form submitted: ', { email, password });
 
-    authForm.reset();
+    signIn.reset();
   }
 
   return (
-    <Form {...authForm}>
+    <Form {...signIn}>
       <form
         className="flex flex-col gap-4"
-        onSubmit={authForm.handleSubmit(handleAuth)}
+        onSubmit={signIn.handleSubmit(handleSignIn)}
       >
         <FormField
-          control={authForm.control}
+          control={signIn.control}
           name="email"
           render={({ field }) => {
             return (
@@ -60,7 +60,7 @@ export function AuthForm() {
         />
 
         <FormField
-          control={authForm.control}
+          control={signIn.control}
           name="password"
           render={({ field }) => {
             return (

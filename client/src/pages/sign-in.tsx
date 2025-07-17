@@ -1,6 +1,6 @@
 import { GoogleLogin } from '@react-oauth/google';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { AuthForm } from '@/components/auth-form';
+import { SignInForm } from '@/components/sign-in-form';
 import {
   Card,
   CardContent,
@@ -12,10 +12,10 @@ import { useAuth } from '@/contexts/auth-context';
 
 export function SignIn() {
   const navigate = useNavigate();
-  const { accessToken, login } = useAuth();
+  const { accessToken, googleSignIn } = useAuth();
 
   const handleSignIn = async (credential: string) => {
-    await login(credential);
+    await googleSignIn(credential);
     navigate('/create-room', { replace: true });
   };
 
@@ -32,7 +32,7 @@ export function SignIn() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-8">
-          <AuthForm />
+          <SignInForm />
 
           <div className="flex items-center gap-1">
             <p className="text-muted-foreground text-sm">
