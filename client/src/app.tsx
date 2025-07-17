@@ -3,14 +3,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { Auth } from '@/pages/auth';
+import { RequireAuth } from '@/components/require-auth';
+import { AuthProvider } from '@/contexts/auth-context';
 import { CreateRoom } from '@/pages/create-room';
 import { RecordRoomAudio } from '@/pages/record-room-audio';
 import { Room } from '@/pages/room';
-
-import { RequireAuth } from './components/require-auth';
-
-import { AuthProvider } from './contexts/auth-context';
+import { SignIn } from '@/pages/sign-in';
 
 export function App() {
   const queryClient = new QueryClient();
@@ -22,7 +20,7 @@ export function App() {
         <BrowserRouter>
           <AuthProvider>
             <Routes>
-              <Route element={<Auth />} index />
+              <Route element={<SignIn />} index />
               <Route
                 element={
                   <RequireAuth>

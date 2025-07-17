@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/card';
 import { useAuth } from '@/contexts/auth-context';
 
-export function Auth() {
+export function SignIn() {
   const navigate = useNavigate();
   const { accessToken, login } = useAuth();
 
-  const handleAuth = async (credential: string) => {
+  const handleSignIn = async (credential: string) => {
     await login(credential);
     navigate('/create-room', { replace: true });
   };
@@ -41,7 +41,7 @@ export function Auth() {
               onError={() => alert('Error: login failed')}
               onSuccess={(response) => {
                 if (response.credential) {
-                  handleAuth(response.credential);
+                  handleSignIn(response.credential);
                 }
               }}
             />
