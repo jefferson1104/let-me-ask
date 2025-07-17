@@ -43,16 +43,6 @@ export const createUserRoute: FastifyPluginCallbackZod = (app) => {
           sub: createHash('sha256').update(email).digest('hex'),
         };
 
-        const refreshToken = app.jwt.sign(
-          { email, provider: provider.name, providerId: provider.sub },
-          { expiresIn: '7d' }
-        );
-
-        const accessToken = app.jwt.sign(
-          { email, provider: provider.name, providerId: provider.sub },
-          { expiresIn: '15m' }
-        );
-
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await db.insert(schema.users).values({
@@ -61,8 +51,6 @@ export const createUserRoute: FastifyPluginCallbackZod = (app) => {
           password: hashedPassword,
           provider: provider.name,
           providerId: provider.sub,
-          accessToken,
-          refreshToken,
         });
 
         return reply.status(201).send({ message: 'User created successfully' });

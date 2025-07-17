@@ -36,6 +36,13 @@
       "when": 1752729097987,
       "tag": "0004_hard_giant_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1752762121460,
+      "tag": "0005_oval_sue_storm",
+      "breakpoints": true
     }
   ]
 }

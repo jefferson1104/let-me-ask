@@ -41,7 +41,13 @@ export const userAuthGoogleRoute: FastifyPluginCallbackZod = (app) => {
         );
 
         const accessToken = app.jwt.sign(
-          { email, provider: 'google', providerId: sub },
+          {
+            email,
+            name,
+            avatarUrl: picture,
+            provider: 'google',
+            providerId: sub,
+          },
           { expiresIn: '15m' }
         );
 

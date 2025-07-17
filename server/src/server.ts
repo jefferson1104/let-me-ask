@@ -17,6 +17,7 @@ import { getRoomQuestionsRoute } from './http/routes/get-room-questions.ts';
 import { getRoomsRoute } from './http/routes/get-rooms.ts';
 import { refreshTokenRoute } from './http/routes/refresh-token.ts';
 import { uploadAudioRoute } from './http/routes/upload-audio.ts';
+import { userAuthRoute } from './http/routes/user-auth.ts';
 import { userAuthGoogleRoute } from './http/routes/user-auth-google.ts';
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -38,6 +39,7 @@ app.get('/health', () => {
   return 'OK';
 });
 
+app.register(userAuthRoute);
 app.register(userAuthGoogleRoute);
 app.register(refreshTokenRoute);
 app.register(createUserRoute);
