@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -19,7 +20,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateRoom } from '@/http/use-create-room';
-import { Button } from './ui/button';
 
 const createRoomSchema = z.object({
   name: z.string().min(3, { message: 'It must be at least 3 characters long' }),
