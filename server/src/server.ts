@@ -12,6 +12,7 @@ import { env } from './env.ts';
 
 import { createQuestionRoute } from './http/routes/create-question.ts';
 import { createRoomsRoute } from './http/routes/create-room.ts';
+import { createUserRoute } from './http/routes/create-user.ts';
 import { getRoomQuestionsRoute } from './http/routes/get-room-questions.ts';
 import { getRoomsRoute } from './http/routes/get-rooms.ts';
 import { refreshTokenRoute } from './http/routes/refresh-token.ts';
@@ -39,6 +40,7 @@ app.get('/health', () => {
 
 app.register(userAuthGoogleRoute);
 app.register(refreshTokenRoute);
+app.register(createUserRoute);
 
 app.register(getRoomsRoute);
 app.register(createRoomsRoute);
