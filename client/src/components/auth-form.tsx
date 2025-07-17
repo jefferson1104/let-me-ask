@@ -14,7 +14,6 @@ import { Input } from '@/components/ui/input';
 
 const authSchema = z.object({
   email: z.email({ message: 'Invalid email address' }),
-
   password: z
     .string()
     .nonempty({ message: 'Password is required' })

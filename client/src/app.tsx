@@ -9,6 +9,7 @@ import { CreateRoom } from '@/pages/create-room';
 import { RecordRoomAudio } from '@/pages/record-room-audio';
 import { Room } from '@/pages/room';
 import { SignIn } from '@/pages/sign-in';
+import { SignUp } from '@/pages/sign-up';
 
 export function App() {
   const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ export function App() {
           <AuthProvider>
             <Routes>
               <Route element={<SignIn />} index />
+              <Route element={<SignUp />} path="/register" />
               <Route
                 element={
                   <RequireAuth>

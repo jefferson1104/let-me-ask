@@ -1,5 +1,5 @@
 import { GoogleLogin } from '@react-oauth/google';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthForm } from '@/components/auth-form';
 import {
   Card,
@@ -33,6 +33,17 @@ export function SignIn() {
         </CardHeader>
         <CardContent className="flex flex-col gap-8">
           <AuthForm />
+
+          <div className="flex items-center gap-1">
+            <p className="text-muted-foreground text-sm">
+              if you don't have an account{' '}
+              <Link className="text-zinc-200 underline" to="/register">
+                Sign Up
+              </Link>{' '}
+              first
+            </p>
+          </div>
+
           <div className="flex flex-col items-center justify-center gap-2">
             <CardDescription className="text-center text-xs">
               Or use your Google account to sign in.
