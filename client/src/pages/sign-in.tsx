@@ -11,9 +11,11 @@ import {
 import { useAuth } from '@/contexts/auth-context';
 
 export function SignIn() {
+  // Hooks
   const navigate = useNavigate();
   const { signInWithGoogle, accessToken } = useAuth();
 
+  // Methods
   const handleRedirectToHome = () => {
     navigate('/create-room', { replace: true });
   };
@@ -23,6 +25,7 @@ export function SignIn() {
     handleRedirectToHome();
   };
 
+  // Renders
   if (accessToken) {
     return <Navigate replace to="/create-room" />;
   }
@@ -30,6 +33,11 @@ export function SignIn() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
       <Card className="min-w-80">
         <CardHeader className="flex flex-col items-center justify-center">
+          <img
+            alt="logo"
+            className="w-36"
+            src="/assets/images/logo-light.svg"
+          />
           <CardTitle>Sign In</CardTitle>
           <CardDescription className="text-center text-xs">
             Type your email and password to continue.
@@ -41,7 +49,7 @@ export function SignIn() {
           <div className="flex items-center gap-1">
             <p className="text-muted-foreground text-sm">
               if you don't have an account{' '}
-              <Link className="text-zinc-200 underline" to="/register">
+              <Link className="text-zinc-200 underline" to="/sign-up">
                 Sign Up
               </Link>{' '}
               first

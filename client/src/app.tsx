@@ -22,7 +22,7 @@ export function App() {
           <AuthProvider>
             <Routes>
               <Route element={<SignIn />} index />
-              <Route element={<SignUp />} path="/register" />
+              <Route element={<SignUp />} path="/sign-up" />
               <Route
                 element={
                   <RequireAuth>

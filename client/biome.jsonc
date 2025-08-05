@@ -10,6 +10,9 @@
             "allow": ["error"]
           }
         }
+      },
+      "performance": {
+        "noImgElement": "off"
       }
     }
   }

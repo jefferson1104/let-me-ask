@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -57,7 +57,7 @@ export function SignUpForm() {
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardContent>
         <Form {...form}>
           <form
@@ -136,9 +136,19 @@ export function SignUpForm() {
               }}
             />
 
-            <Button disabled={isSubmitting} type="submit">
+            <Button
+              className="font-black"
+              disabled={isSubmitting}
+              type="submit"
+            >
               Create
             </Button>
+
+            <Link to="/">
+              <Button className="w-full font-black" variant="destructive">
+                Cancel
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>
